@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!---3er paso agregar datos de viewport --->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <!---3er paso fin agregar datos de viewport --->
+
+    <title>Attention Control</title>
+
+     <!---2do paso agregar el bootstrap --->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!---2do paso fin agregar el bootstrap --->
+
+</head>
+<body>
+        <!---4to paso agregar el  div contenedor--->
+        <div class="container-fluid">
+            <div class="row">
+                 <!---5to paso agregar el  div para centrar--->
+                <div class="col-sm-2">  </div>
+                <!---5to paso fin agregar el  div para centrar--->
+                   <!---6to paso agregar el  div para la tabla--->
+                    <div class="col-sm-8">
+                        <!---7mo paso agregar el boton de agregar registro--->
+                        <h2>
+                            <div class="float-right">
+                                <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#myModal">Agregar Control Atención</button>
+
+                            </div>
+                        </h2>
+                         <table class="table table-bordered table-striped table-hover">
+                            <tr class="thead-dark">
+                                <th>ID</th>
+                                 <th>Fecha</th>
+                                 <th>Nombres</th>
+                                 <th>Hora Ingreso</th>
+                                 <th>Hora Salida</th>
+                                 <th>Polo</th>
+                                 <th>Llavero</th>
+                                 <th>Catálogo</th>
+                                <th>Acción</th>
+                                <th>Acción2</th>
+
+                            </tr>
+                             {% for row in attentions  %}
+                            <tr>
+                                <td>{{row.id}}</td>
+                                <td>{{row.fecha}}</td>
+                                <td>{{row.nombres}}</td>
+                                <td>{{row.hora_ingreso}}</td>
+                                <td>{{row.hora_salida}}</td>
+                                <td>{{row.polo_gift}}</td>
+                                <td>{{row.keychain_gift}}</td>
+                                <td>{{row.catalog_book}}</td>
+                                <td>
+                                    <a href="/update/{{row.id}}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{row.0}}" type="button" tooltip="Editar Registro">
+                                    <i class="bi bi-eye"></i>
+                                    Editar
+                                </a>
+                                </td>
+                                 <td>
+                                    <a href="/delete/{{ row.id }}" onclick="return confirm('Seguro que desea eliminar el registro?')" class="btn btn-danger btn-sm">Eliminar</a>
+                                </td>
+                            </tr>
+                             {% endfor %}
+                        </table>
+                         {{ pagination.links }}
+                   </div>
+            </div>
+        </div>
+</body>
+</html>
