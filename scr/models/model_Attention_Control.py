@@ -24,7 +24,7 @@ class model_Attention_Control:
         connection = get_connection()
         with connection.cursor() as cursor:
             SQL_SELECT = "SELECT ID, FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK" \
-                  " FROM Attention_Control"
+                         " FROM Attention_Control"
             cursor.execute(SQL_SELECT)
             result = cursor.fetchall()
             data = []
@@ -57,7 +57,8 @@ class model_Attention_Control:
             connection.commit()
         return affected_rows
 
-    # Actualizar
+        # Actualizar
+
     @staticmethod
     def update_attention_control(attention_control):
         connection = get_connection()

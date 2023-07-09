@@ -27,10 +27,86 @@
                         <!---7mo paso agregar el boton de agregar registro--->
                         <h2>
                             <div class="float-right">
-                                <button class="btn btn-primary mr-2" data-toggle="modal" data-target="#myModal">Agregar Control Atención</button>
+                                <button
+                                        class="btn btn-primary mr-2"
+                                        data-toggle="modal"
+                                        data-target="#myModal"
+                                        data-placement="top"
+                                        title="Crear Nuevo Registro">
+                                    Agregar Control Atención</button>
 
                             </div>
                         </h2>
+                        <!---8vo crearción formulario modal Insertar   ---->
+                        <div id="myModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                   <div class="modal-header">
+                                       <h5 class="modal-title text-primary text-center" >Agregar registro Atención </h5>
+                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                           <span aria-hidden="true">&times;</span>
+                                       </button>
+                                   </div>
+                                    <div class="modal-body">
+                                        <form action="{{ url_for('attention_ctrl_bp.insert') }}" method="POST">
+                                             <!---Campo:fECHA rEGISTRO   ---->
+                                            <div class="form-group">
+                                                <label for="registro_fecha">Fecha Registro</label>
+                                                <input name="fecha" type="date" class="form-control" id="registro_fecha" required>
+
+
+                                            </div>
+                                            <!---Campo:Nombres   ---->
+                                            <div class="form-group">
+                                                <label for="registro_nombres">Nombres</label>
+                                                <input name="nombres" type="text" class="form-control" id="registro_nombres" placeholder="Ingrese Nombres" required>
+                                            </div>
+                                             <!---Campo:Hora Ingreso y Hora de Salida   ---->
+                                            <div class="form-inline" style="margin-bottom: 10px;">
+                                                 <div class="form-group">
+                                                    <label for="registro_hora_ingreso">Hora Ingreso: </label>
+                                                    <input name="hora_ingreso" type="time" class="form-control" id="registro_hora_ingreso"  required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="registro_hora_salida">Hora Salida: </label>
+                                                    <input name="hora_salida" type="time" class="form-control" id="registro_hora_salida"  required>
+                                                </div>
+                                            </div>
+                                             <!---Opciones:Polo regalo y Llavero Regalo-->
+                                            <div class="form-inline" style="margin-bottom: 10px;">
+                                                <div class="form-group" style="margin-right: 10px;">
+                                                     <div class="form-check">
+                                                         <input name="polo_gift" type="checkbox" class="form-check-input" id="registro_polo_gift">
+                                                         <label class="form-check-label" for="registro_polo_gift">Polo Regalo</label>
+                                                     </div>
+                                                </div>
+                                                <div class="form-group" style="margin-right: 10px;">
+
+                                                    <div class="form-check">
+                                                        <input name="keychain_gift" type="checkbox" class="form-check-input" id="registro_keychain_gift">
+                                                        <label class="form-check-label" for="registro_keychain_gift">Llavero Regalo</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!---Opciones:Catálogo Entregado o No Entregado--->
+                                            <div class="form-group">
+                                                <label >
+                                                    <input type="radio" name="catalog_book" value="Si">Entregado
+                                                </label>
+                                                <label >
+                                                    <input type="radio" name="catalog_book" value="No"> No Entregado
+                                                </label>
+                                            </div>
+                                            <!---Botón:Registra--->
+                                            <button type="submit" class="btn btn-primary md-2">Registrar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
                          <table class="table table-bordered table-striped table-hover">
                             <tr class="thead-dark">
                                 <th>ID</th>
@@ -71,5 +147,11 @@
                    </div>
             </div>
         </div>
+        <!---Enlaces copiar de github de este proyecto   ---->
+       <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 </html>
