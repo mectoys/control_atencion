@@ -8,6 +8,31 @@ from scr.models.entities.Attention_Control import Attention_Control
 main = Blueprint('attention_ctrl_bp', __name__)
 
 
+# Funcion auxiliar
+def get_attention_control_data_from_request():
+    fecha = request.form['fecha']
+    nombres = request.form['nombres']
+    hora_ingreso = request.form['hora_ingreso']
+    hora_salida = request.form['hora_salida']
+    estado_polo = request.form.get('polo_gift', False)
+
+    if estado_polo == 'on':
+        estado_polo = True
+    else:
+        estado_polo = False
+
+    estado_keychain = request.form.get('keychain_gift', False)
+
+    if estado_keychain == 'on':
+        estado_keychain = True
+    else:
+        estado_keychain = False
+
+    catalog_book = request.form['catalog_book']
+
+    return fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book
+
+
 # Select
 @main.route('/')
 def Index():
@@ -44,45 +69,41 @@ def Index():
 @main.route('/insert', methods=['POST'])
 def insert():
     if request.method == "POST":
+        # obtener los datos comunes de la solicitud
+        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book = get_attention_control_data_from_request()
 
-        fecha = request.form['fecha']
-        nombres = request.form['nombres']
-        hora_ingreso = request.form['hora_ingreso']
-        hora_salida = request.form['hora_salida']
-        estado_polo = request.form.get('polo_gift', False)
+        retorno = model_Attention_Control.add_attention_control(
+            Attention_Control(fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book))
 
-        if estado_polo == 'on':
-            estado_polo = True
-        else:
-            estado_polo = False
-
-        estado_keychain = request.form.get('keychain_gift', False)
-
-        if estado_keychain == 'on':
-            estado_keychain = True
-        else:
-            estado_keychain = False
-
-        catalog_book = request.form['catalog_book']
-
-        attention_control_model = Attention_Control(fecha, nombres, hora_ingreso, hora_salida, estado_polo,
-                                                    estado_keychain, catalog_book)
-
-        affected_rows =model_Attention_Control.add_attention_control(attention_control_model)
-
-        if affected_rows ==1:
+        if retorno == 1:
             print('Registrado')
         else:
-            print('No registado')
+            print('No registrado')
+
             # redirect= funcion que redirige a una URL  especifica.
-            #url_for =  funcion que genera la URL para una ruta especifica en función de su nombre.
+            # url_for =  funcion que genera la URL para una ruta especifica en función de su nombre.
             # attention_ctrl_bp nombre  de la ruta a la que se va a redirigir.
         return redirect(url_for('attention_ctrl_bp.Index'))
+
 
 # update
 @main.route('/update', methods=['POST'])
 def update():
-    return render_template('index.html')
+    if request.method == "POST":
+
+        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book = get_attention_control_data_from_request()
+
+        idKey = request.form['id']
+        attention_control_model = Attention_Control(fecha, nombres, hora_ingreso, hora_salida, estado_polo,
+                                                    estado_keychain, catalog_book, idKey)
+
+        retorno = model_Attention_Control.update_attention_control(attention_control_model)
+        if retorno == 1:
+            print('Actualizado')
+        else:
+            print('No Actualizado')
+
+        return redirect(url_for('attention_ctrl_bp.Index'))
 
 
 # delete

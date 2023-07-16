@@ -54,7 +54,6 @@
                                                 <label for="registro_fecha">Fecha Registro</label>
                                                 <input name="fecha" type="date" class="form-control" id="registro_fecha" required>
 
-
                                             </div>
                                             <!---Campo:Nombres   ---->
                                             <div class="form-group">
@@ -108,40 +107,112 @@
                         </div>
 
                          <table class="table table-bordered table-striped table-hover">
-                            <tr class="thead-dark">
-                                <th>ID</th>
-                                 <th>Fecha</th>
-                                 <th>Nombres</th>
-                                 <th>Hora Ingreso</th>
-                                 <th>Hora Salida</th>
-                                 <th>Polo</th>
-                                 <th>Llavero</th>
-                                 <th>Catálogo</th>
-                                <th>Acción</th>
-                                <th>Acción2</th>
+                             <thead class="thead-dark">
+                                <tr >
+                                    <th>ID </th>
+                                     <th>Fecha </th>
+                                     <th>Nombres </th>
+                                     <th>Hora Ingreso </th>
+                                     <th>Hora Salida </th>
+                                     <th>Polo </th>
+                                     <th>Llavero </th>
+                                     <th>Catálogo </th>
+                                    <th>Acción </th>
+                                    <th>Acción2 </th>
+                                </tr>
+                            </thead>
+                            {% for row in attentions %}
+                                <tr>
+                                    <td>{{ row.id }}</td>
+                                    <td>{{ row.fecha }}</td>
+                                    <td>{{ row.nombres }}</td>
+                                    <td>{{ row.hora_ingreso }}</td>
+                                    <td>{{ row.hora_salida }}</td>
+                                    <td>{{ row.polo_gift }}</td>
+                                    <td>{{ row.keychain_gift }}</td>
+                                    <td>{{ row.catalog_book }}</td>
+                                    <td>
+                                        <a href="/update/{{ row.id }}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{ row.id }}" type="button" tooltip="Actualizar Registro">
+                                            <i class="bi bi-eye"></i>
+                                            Editar
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="/delete/{{ row.id }}" onclick="return confirm('Seguro que desea eliminar el registro?')" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </td>
+                                </tr>
+                             <!-- 9no paso Formulario Modal Edicion -->
+                                <div id="modaledit{{row.id}}" class="modal fade" role="dialog">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                           <div class="modal-header">
+                                               <h5 class="modal-title text-primary text-center" >Actualizar registro Atención </h5>
+                                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                   <span aria-hidden="true">&times;</span>
+                                               </button>
+                                           </div>
+                                            <div class="modal-body">
+                                                <form action="{{ url_for('attention_ctrl_bp.update') }}" method="POST">
+                                                    <input name="id" type="hidden" value="{{ row.id }}">
+                                                     <!---Campo:fECHA rEGISTRO   ---->
+                                                    <div class="form-group">
+                                                        <label for="actualizar_fecha">Fecha Registro</label>
+                                                        <input value="{{ row.fecha.strftime('%Y-%m-%d')  }}" name="fecha" type="date" class="form-control" id="actualizar_fecha" required>
 
-                            </tr>
-                             {% for row in attentions  %}
-                            <tr>
-                                <td>{{row.id}}</td>
-                                <td>{{row.fecha}}</td>
-                                <td>{{row.nombres}}</td>
-                                <td>{{row.hora_ingreso}}</td>
-                                <td>{{row.hora_salida}}</td>
-                                <td>{{row.polo_gift}}</td>
-                                <td>{{row.keychain_gift}}</td>
-                                <td>{{row.catalog_book}}</td>
-                                <td>
-                                    <a href="/update/{{row.id}}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{row.0}}" type="button" tooltip="Editar Registro">
-                                    <i class="bi bi-eye"></i>
-                                    Editar
-                                </a>
-                                </td>
-                                 <td>
-                                    <a href="/delete/{{ row.id }}" onclick="return confirm('Seguro que desea eliminar el registro?')" class="btn btn-danger btn-sm">Eliminar</a>
-                                </td>
-                            </tr>
-                             {% endfor %}
+                                                    </div>
+                                                    <!---Campo:Nombres   ---->
+                                                    <div class="form-group">
+                                                        <label for="actualizar_nombres">Nombres</label>
+                                                        <input value="{{ row.nombres }}" name="nombres" type="text" class="form-control" id="actualizar_nombres" placeholder="Ingrese Nombres" required>
+                                                    </div>
+                                                     <!---Campo:Hora Ingreso y Hora de Salida   ---->
+                                                    <div class="form-inline" style="margin-bottom: 10px;">
+                                                         <div class="form-group">
+                                                            <label for="actualizar_hora_ingreso">Hora Ingreso: </label>
+                                                            <input value="{{row.hora_ingreso}}" name="hora_ingreso" type="time" class="form-control" id="actualizar_hora_ingreso"  required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="actualizar_hora_salida">Hora Salida: </label>
+                                                            <input value="{{row.hora_salida}}" name="hora_salida" type="time" class="form-control" id="actualizar_hora_salida"  required>
+                                                        </div>
+                                                    </div>
+                                                     <!---Opciones:Polo regalo y Llavero Regalo-->
+                                                    <div class="form-inline" style="margin-bottom: 10px;">
+                                                        <div class="form-group" style="margin-right: 10px;">
+                                                             <div class="form-check">
+                                                                 <input name="polo_gift" type="checkbox" class="form-check-input" {% if row.polo_gift %}checked {% endif %} id="actualizar_polo_gift">
+                                                                 <label class="form-check-label" for="actualizar_polo_gift">Polo Regalo</label>
+                                                             </div>
+                                                        </div>
+                                                        <div class="form-group" style="margin-right: 10px;">
+
+                                                            <div class="form-check">
+                                                                <input name="keychain_gift" type="checkbox" class="form-check-input"  {% if row.keychain_gift %}checked {% endif %} id="actualizar_keychain_gift">
+                                                                <label class="form-check-label" for="actualizar_keychain_gift">Llavero Regalo</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!---Opciones:Catálogo Entregado o No Entregado--->
+                                                    <div class="form-group">
+                                                        <label >
+                                                            <input type="radio" name="catalog_book" value="Si" {% if row.catalog_book =='Si' %} checked {% endif %}>Entregado
+                                                        </label>
+                                                        <label >
+                                                            <input type="radio" name="catalog_book" value="No" {% if row.catalog_book =='No' %} checked {% endif %}> No Entregado
+                                                        </label>
+                                                    </div>
+                                                    <!---Botón:Registra--->
+                                                    <button type="submit" class="btn btn-primary md-2">Actualizar</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                              <!-- 9no paso Formulario Modal Edicion -->
+
+                            {% endfor %}
+
                         </table>
                          {{ pagination.links }}
                    </div>

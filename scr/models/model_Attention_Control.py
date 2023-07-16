@@ -44,36 +44,53 @@ class model_Attention_Control:
     # Insertar
     @staticmethod
     def add_attention_control(attention_control):
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            # SQLINJECTION EVITA CON LA CONSULTA PARAMETRIZADA
-            SQLINSERT = "INSERT INTO Attention_Control(FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK)" \
-                        " VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            values = (attention_control.fecha, attention_control.nombres, attention_control.hora_ingreso,
-                      attention_control.hora_salida,
-                      attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book)
-            cursor.execute(SQLINSERT, values)
-            affected_rows = cursor.rowcount
-            connection.commit()
-        return affected_rows
+        mi_db = get_connection()
+        mi_cursor = mi_db.cursor()
+
+        # SQLINJECTION EVITA CON LA CONSULTA PARAMETRIZADA
+        SQL_INSERT = "INSERT INTO Attention_Control(FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK)" \
+                     " VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        values = (attention_control.fecha, attention_control.nombres, attention_control.hora_ingreso,
+                  attention_control.hora_salida,
+                  attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book)
+        try:
+            mi_cursor.execute(SQL_INSERT, values)
+        except:
+            mi_db.rollback()
+            retorno = 0
+        else:
+            mi_db.commit()
+            retorno = 1
+        finally:
+            mi_db.close()
+            return retorno
 
         # Actualizar
 
     @staticmethod
     def update_attention_control(attention_control):
-        connection = get_connection()
-        with connection.cursor() as cursor:
-            SQLUPDATE = "UPDATE Attention_Control SET FECHA=%s, NOMBRES=%s, HORA_INGRESO=%s, HORA_SALIDA=%s, POLO_GIFT=%s," \
-                        " KEYCHAIN_GIFT=%s, CATALOG_BOOK=%s WHERE ID=%s"
-            values = (attention_control.fecha, attention_control.nombres, attention_control.hora_ingreso,
-                      attention_control.hora_salida,
-                      attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book,
-                      attention_control.id)
-            cursor.execute(SQLUPDATE, values)
-            connection.commit()
+        mi_db = get_connection()
+        mi_cursor = mi_db.cursor()
+
+        SQLUPDATE = "UPDATE Attention_Control SET FECHA=%s, NOMBRES=%s, HORA_INGRESO=%s, HORA_SALIDA=%s, POLO_GIFT=%s," \
+                    " KEYCHAIN_GIFT=%s, CATALOG_BOOK=%s WHERE ID=%s"
+        values = (attention_control.fecha, attention_control.nombres, attention_control.hora_ingreso,
+                  attention_control.hora_salida,
+                  attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book,
+                  attention_control.id)
+        try:
+            mi_cursor.execute(SQLUPDATE, values)
+        except:
+            mi_db.rollback()
+            retorno = 0
+        else:
+            mi_db.commit()
+            retorno = 1
+        finally:
+            mi_db.close()
+            return retorno
 
     # Eliminar
-
     @staticmethod
     def delete_attention_control(id):
         with get_connection() as connection, connection.cursor() as cursor:
