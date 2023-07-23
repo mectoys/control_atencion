@@ -118,7 +118,8 @@
                                      <th>Llavero </th>
                                      <th>Catálogo </th>
                                     <th>Acción </th>
-                                    <th>Acción2 </th>
+                                    <th>Eliminar </th>
+                                    <th>Anular </th>
                                 </tr>
                             </thead>
                             {% for row in attentions %}
@@ -139,6 +140,9 @@
                                     </td>
                                     <td>
                                         <a href="/delete/{{ row.id }}" onclick="return confirm('Seguro que desea eliminar el registro?')" class="btn btn-danger btn-sm">Eliminar</a>
+                                    </td>
+                                    <td>
+                                        <a href="/cancel/{{ row.id }}" onclick="return confirm('Seguro que desea Anular el registro?')" class="btn btn-danger btn-sm">Anular</a>
                                     </td>
                                 </tr>
                              <!-- 9no paso Formulario Modal Edicion -->

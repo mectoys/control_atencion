@@ -7,7 +7,6 @@ from scr.models.entities.Attention_Control import Attention_Control
 
 main = Blueprint('attention_ctrl_bp', __name__)
 
-
 # Funcion auxiliar
 def get_attention_control_data_from_request():
     fecha = request.form['fecha']
@@ -106,7 +105,24 @@ def update():
         return redirect(url_for('attention_ctrl_bp.Index'))
 
 
-# delete
+# delete primer enfoque
 @main.route('/delete/<string:id>')
 def delete(id):
-    return render_template('index.html')
+    retorno = model_Attention_Control.delete_attention_control(id)
+    if retorno == 1:
+        print('Eliminado')
+    else:
+        print('No Eliminado')
+
+    return redirect(url_for('attention_ctrl_bp.Index'))
+
+#Anulación segundo enfoque
+@main.route('/cancel/<string:id>')
+def cancel(id):
+    retorno = model_Attention_Control.cancel_attention_control(id)
+    if retorno == 1:
+        print('Anulado')
+    else:
+        print('No Anulado')
+
+    return redirect(url_for('attention_ctrl_bp.Index'))
