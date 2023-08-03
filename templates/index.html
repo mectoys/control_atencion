@@ -33,7 +33,13 @@
                                         data-target="#myModal"
                                         data-placement="top"
                                         title="Crear Nuevo Registro">
-                                    Agregar Control Atención</button>
+                                    Agregar Control Atención
+                                </button>
+
+                            <a href="{{ url_for('attention_ctrl_bp.export_excel')}}" class ="btn btn-success">
+                                Exportar Excel
+                            </a>
+
 
                             </div>
                         </h2>

@@ -1,11 +1,14 @@
-from flask import Blueprint, render_template, request, url_for
+import io
+
+from flask import Blueprint, render_template, request, url_for, make_response
 from flask_paginate import Pagination, get_page_args
 from werkzeug.utils import redirect
-
+import pandas as pd
 from scr.models.model_Attention_Control import model_Attention_Control
 from scr.models.entities.Attention_Control import Attention_Control
 
 main = Blueprint('attention_ctrl_bp', __name__)
+
 
 # Funcion auxiliar
 def get_attention_control_data_from_request():
@@ -116,7 +119,8 @@ def delete(id):
 
     return redirect(url_for('attention_ctrl_bp.Index'))
 
-#Anulación segundo enfoque
+
+# Anulación segundo enfoque
 @main.route('/cancel/<string:id>')
 def cancel(id):
     retorno = model_Attention_Control.cancel_attention_control(id)
@@ -126,3 +130,27 @@ def cancel(id):
         print('No Anulado')
 
     return redirect(url_for('attention_ctrl_bp.Index'))
+
+
+# Exportar Excel
+
+@main.route('/export-excel')
+def export_excel():
+    # obtener los datos
+
+    attentions = model_Attention_Control.get_attention_control_list()
+    df = pd.DataFrame(attentions)
+
+    df = df.rename(columns={0: 'ID', 1: 'FECHA', 2: 'NOMBRES', 3: 'HORA_INGRESO', 4: 'HORA_SALIDA', 5: 'POLO_GIFT',
+                            6: 'KEYCHAIN_GIFT', 7: 'CATALOG_BOOK'})
+
+    # Crear un objeto BytesIO para almacenar el excel file en memoria
+
+    buffer = io.BytesIO()
+    df.to_excel(buffer, index=False)
+
+    response = make_response(buffer.getvalue())
+    response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    response.headers['Content-Disposition'] = 'attachment: filename=registros.xlsx'
+
+    return response

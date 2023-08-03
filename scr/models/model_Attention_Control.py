@@ -11,7 +11,8 @@ class model_Attention_Control:
     def get_attention_control_list():
         connection = get_connection()
         with connection.cursor() as cursor:
-            SQL_SELECT = "SELECT ID, FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK" \
+            SQL_SELECT = "SELECT ID, FECHA, NOMBRES, TIME_FORMAT(HORA_INGRESO, '%h:%i %p')  as HORA_INGRESO, " \
+                         " TIME_FORMAT(HORA_SALIDA, '%h:%i %p') as HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK" \
                          " FROM  Attention_Control WHERE STATE ='ACT'"
             cursor.execute(SQL_SELECT)
             listattention_ctrl = cursor.fetchall()
@@ -23,7 +24,8 @@ class model_Attention_Control:
     def get_attention_control_list_ver2():
         connection = get_connection()
         with connection.cursor() as cursor:
-            SQL_SELECT = "SELECT ID, FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK" \
+            SQL_SELECT = "SELECT ID, FECHA, NOMBRES,   HORA_INGRESO, " \
+                         "HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK" \
                          " FROM Attention_Control WHERE STATE ='ACT'"
             cursor.execute(SQL_SELECT)
             result = cursor.fetchall()
@@ -43,17 +45,16 @@ class model_Attention_Control:
 
     # Insertar
     @staticmethod
-    #Dejar como tarea en video 7  un dato por default ACT en el campo state se explicara la solucion en el video 8.
     def add_attention_control(attention_control):
         mi_db = get_connection()
         mi_cursor = mi_db.cursor()
         state = 'ACT'
         # SQLINJECTION EVITA CON LA CONSULTA PARAMETRIZADA
-        SQL_INSERT = "INSERT INTO Attention_Control(FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, KEYCHAIN_GIFT, CATALOG_BOOK, STATE)" \
-                     " VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        SQL_INSERT = "INSERT INTO Attention_Control(FECHA, NOMBRES, HORA_INGRESO, HORA_SALIDA, POLO_GIFT, " \
+                     "KEYCHAIN_GIFT, CATALOG_BOOK, STATE) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
         values = (attention_control.fecha, attention_control.nombres, attention_control.hora_ingreso,
                   attention_control.hora_salida,
-                  attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book, state )
+                  attention_control.polo_gift, attention_control.keychain_gift, attention_control.catalog_book, state)
         try:
             mi_cursor.execute(SQL_INSERT, values)
         except:
@@ -110,7 +111,7 @@ class model_Attention_Control:
             mi_db.close()
             return retorno
 
-#Segundo enfoque de Anulacion
+    # Segundo enfoque de Anulacion
     @staticmethod
     def cancel_attention_control(id):
         mi_db = get_connection()
@@ -118,7 +119,7 @@ class model_Attention_Control:
 
         SQL_CANCEL = "UPDATE Attention_Control SET STATE=%s WHERE ID=%s"
         try:
-            mi_cursor.execute(SQL_CANCEL, ('ANU',id))
+            mi_cursor.execute(SQL_CANCEL, ('ANU', id))
         except:
             mi_db.rollback()
             retorno = 0
