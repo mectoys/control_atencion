@@ -8,4 +8,3 @@ class Attention_Control:
         self.polo_gift = polo_gift
         self.keychain_gift = keychain_gift
         self.catalog_book = catalog_book
-

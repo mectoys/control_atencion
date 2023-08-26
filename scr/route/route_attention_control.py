@@ -1,6 +1,6 @@
 import io
 
-from flask import Blueprint, render_template, request, url_for, make_response
+from flask import Blueprint, render_template, request, url_for, make_response, session
 from flask_paginate import Pagination, get_page_args
 from werkzeug.utils import redirect
 import pandas as pd
@@ -9,6 +9,13 @@ from scr.models.entities.Attention_Control import Attention_Control
 
 main = Blueprint('attention_ctrl_bp', __name__)
 
+
+# En este caso, se ha creado la función(auxiliar) get_attention_control_data_from_request() que se encarga
+# de procesar los datos comunes de la solicitud. Luego, en cada ruta, se llama a esta función para obtener
+# los datos y se utiliza para crear la instancia del modelo o para realizar la actualización en la base de datos.
+
+# De esta manera, se evita la repetición de código y se mantiene el flujo de procesamiento de datos de manera más
+# organizada.
 
 # Funcion auxiliar
 def get_attention_control_data_from_request():
@@ -36,14 +43,26 @@ def get_attention_control_data_from_request():
 
 
 # Select
-@main.route('/')
+@main.route('/', methods=['GET', 'POST'])
 def Index():
+    paginated_data = []
+    data = []
+    pagination = None
+
     # Obtener los parametros de paginación de la URL actual
     page, per_page, offset = get_page_args(page_parameter='page', per_page_parameter='per_page')
-    # Obtener datos  para la tabla
-    attentions = model_Attention_Control.get_attention_control_list_ver2()
+    fecha_desde = session.get('fecha_desde')
+    fecha_hasta = session.get('fecha_hasta')
 
-    data = []
+    if request.method == 'POST':
+        fecha_desde = request.form.get('fecha_desde')
+        fecha_hasta = request.form.get('fecha_hasta')
+        session['fecha_desde'] = fecha_desde
+        session['fecha_hasta'] = fecha_hasta
+
+    # Obtener datos  para la tabla
+    attentions = model_Attention_Control.get_attention_control_list_ver2(fecha_desde, fecha_hasta)
+
     # convertir los obj. a una lista de diccionario
     for attention in attentions:
         attention_dict = {
@@ -55,6 +74,9 @@ def Index():
             'polo_gift': attention.polo_gift,
             'keychain_gift': attention.keychain_gift,
             'catalog_book': attention.catalog_book,
+            'hora_ingreso_bd': attention.hora_ingreso_bd,
+            'hora_salida_bd': attention.hora_salida_bd
+
         }
         data.append(attention_dict)
         # calcular el numero total de elementos y la lista de elementos para la pag. actual.
@@ -64,7 +86,8 @@ def Index():
         pagination = Pagination(page=page, per_page=per_page, total=total, css_framework='bootstrap4')
         # data = model_Attention_Control.get_attention_control_list()
 
-    return render_template('index.html', attentions=paginated_data, pagination=pagination)
+    return render_template('index.html', fecha_desde=fecha_desde, fecha_hasta=fecha_hasta,
+                           attentions=paginated_data, pagination=pagination)
 
 
 # insert
@@ -72,7 +95,8 @@ def Index():
 def insert():
     if request.method == "POST":
         # obtener los datos comunes de la solicitud
-        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book = get_attention_control_data_from_request()
+        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book \
+            = get_attention_control_data_from_request()
 
         retorno = model_Attention_Control.add_attention_control(
             Attention_Control(fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book))
@@ -93,7 +117,8 @@ def insert():
 def update():
     if request.method == "POST":
 
-        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book = get_attention_control_data_from_request()
+        fecha, nombres, hora_ingreso, hora_salida, estado_polo, estado_keychain, catalog_book \
+            = get_attention_control_data_from_request()
 
         idKey = request.form['id']
         attention_control_model = Attention_Control(fecha, nombres, hora_ingreso, hora_salida, estado_polo,
@@ -133,7 +158,6 @@ def cancel(id):
 
 
 # Exportar Excel
-
 @main.route('/export-excel')
 def export_excel():
     # obtener los datos
@@ -149,8 +173,13 @@ def export_excel():
     buffer = io.BytesIO()
     df.to_excel(buffer, index=False)
 
+    # Explicar que despues de attechment va un punto y coma para arreglar el nombre de la descarga!!!!!
+    # response = make_response(buffer.getvalue())
+    # response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    #   response.headers['Content-Disposition'] = 'attachment: filename=registros.xlsx'
+
     response = make_response(buffer.getvalue())
     response.headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    response.headers['Content-Disposition'] = 'attachment: filename=registros.xlsx'
+    response.headers['Content-Disposition'] = 'attachment; filename=registros.xlsx'
 
     return response

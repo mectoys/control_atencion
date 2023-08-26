@@ -36,13 +36,55 @@
                                     Agregar Control Atención
                                 </button>
 
-                            <a href="{{ url_for('attention_ctrl_bp.export_excel')}}" class ="btn btn-success">
-                                Exportar Excel
-                            </a>
+                                <a href="{{ url_for('attention_ctrl_bp.export_excel')}}" class ="btn btn-success">
+                                    Exportar Excel
+                                </a>
 
+                                <button
+                                    class="btn btn-primary mr-2"
+                                        data-toggle="modal"
+                                        data-target="#myModalFind"
+                                        data-placement="top"
+                                        title="Busqueda por Fecha">
+                                    Busqueda
+
+                                </button>
 
                             </div>
                         </h2>
+                        <!---Formulario Modal para la busqueda  ---->
+                        <div id="myModalFind" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                       <h5 class="modal-title text-primary text-center" >Busqueda </h5>
+                                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                           <span aria-hidden="true">&times;</span>
+                                       </button>
+                                   </div>
+                                     <div class="modal-body">
+                                         <form action="{{ url_for('attention_ctrl_bp.Index') }}" method="POST">
+                                             <!---Campo fecha desde-->
+                                             <div class="form-group">
+                                                 <label for="busqueda_desde">Fecha Desde</label>
+                                                 <input name="fecha_desde" type="date" class="form-control" id="busqueda_desde" required>
+                                             </div>
+                                             <!---Campo fecha hasta-->
+                                             <div class="form-group">
+                                                 <label for="busqueda_hasta">Fecha Desde</label>
+                                                 <input name="fecha_hasta" type="date" class="form-control" id="busqueda_hasta" required>
+                                             </div>
+                                             <!---Boton para enviar datos del formulario-->
+                                             <button type="submit" class="btn btn-primary">Buscar</button>
+
+                                         </form>
+
+                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                           <!---Fin Formulario Modal para la busqueda    ---->
+
                         <!---8vo crearción formulario modal Insertar   ---->
                         <div id="myModal" class="modal fade" role="dialog">
                             <div class="modal-dialog">
@@ -123,6 +165,8 @@
                                      <th>Polo </th>
                                      <th>Llavero </th>
                                      <th>Catálogo </th>
+                                      <th style="display :none;">Hora Ingreso bd</th>
+                                     <th style="display :none;">Hora Salida bd</th>
                                     <th>Acción </th>
                                     <th>Eliminar </th>
                                     <th>Anular </th>
@@ -131,13 +175,27 @@
                             {% for row in attentions %}
                                 <tr>
                                     <td>{{ row.id }}</td>
-                                    <td>{{ row.fecha }}</td>
+                                    <td>{{ row.fecha.strftime('%d/%m/%Y')  }} </td>
                                     <td>{{ row.nombres }}</td>
-                                    <td>{{ row.hora_ingreso }}</td>
-                                    <td>{{ row.hora_salida }}</td>
-                                    <td>{{ row.polo_gift }}</td>
-                                    <td>{{ row.keychain_gift }}</td>
-                                    <td>{{ row.catalog_book }}</td>
+                                    <td>{{ row.hora_ingreso}} </td>
+                                    <td>{{ row.hora_salida}} </td>
+                                     <td>
+                                            {% if row.polo_gift == 1 %}
+                                                <input type="checkbox" checked disabled>
+                                            {% else %}
+                                                <input type="checkbox" disabled>
+                                            {% endif %}
+                                    </td>
+                                     <td>
+                                            {% if row.keychain_gift == 1 %}
+                                                <input type="checkbox" checked disabled>
+                                            {% else %}
+                                                <input type="checkbox" disabled>
+                                            {% endif %}
+                                    </td>
+                                    <td>{{ row.catalog_book }} </td>
+                                    <td style="display :none;">{{ row.hora_ingreso_bd}} </td>
+                                    <td style="display :none;">{{ row.hora_salida_bd}} </td>
                                     <td>
                                         <a href="/update/{{ row.id }}" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modaledit{{ row.id }}" type="button" tooltip="Actualizar Registro">
                                             <i class="bi bi-eye"></i>
@@ -168,7 +226,6 @@
                                                     <div class="form-group">
                                                         <label for="actualizar_fecha">Fecha Registro</label>
                                                         <input value="{{ row.fecha.strftime('%Y-%m-%d')  }}" name="fecha" type="date" class="form-control" id="actualizar_fecha" required>
-
                                                     </div>
                                                     <!---Campo:Nombres   ---->
                                                     <div class="form-group">
@@ -178,12 +235,12 @@
                                                      <!---Campo:Hora Ingreso y Hora de Salida   ---->
                                                     <div class="form-inline" style="margin-bottom: 10px;">
                                                          <div class="form-group">
-                                                            <label for="actualizar_hora_ingreso">Hora Ingreso: </label>
-                                                            <input value="{{row.hora_ingreso}}" name="hora_ingreso" type="time" class="form-control" id="actualizar_hora_ingreso"  required>
+                                                            <label for="actualizar_hora_ingreso">Hora Ingreso:  </label>
+                                                            <input value="{{row.hora_ingreso_bd}}" name="hora_ingreso" type="time" class="form-control" id="actualizar_hora_ingreso"  required>
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="actualizar_hora_salida">Hora Salida: </label>
-                                                            <input value="{{row.hora_salida}}" name="hora_salida" type="time" class="form-control" id="actualizar_hora_salida"  required>
+                                                            <input value="{{row.hora_salida_bd }}" name="hora_salida" type="time" class="form-control" id="actualizar_hora_salida"  required>
                                                         </div>
                                                     </div>
                                                      <!---Opciones:Polo regalo y Llavero Regalo-->
