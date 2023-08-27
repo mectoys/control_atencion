@@ -4,6 +4,9 @@ En este tutorial, aprenderás a desarrollar una aplicación web completa utiliza
 
 No importa si eres un principiante o un desarrollador experimentado, este tutorial te brindará los conocimientos necesarios para construir tu propia aplicación web de control de visitas en Flask. 
 
+![Video_10_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/3ee1398b-0080-4757-a85f-f5bca6aad77c)
+ Aprende a utilizar NSSM para convertir tu aplicación web en un servicio local de manera rápida y sencilla. En este tutorial completo, te guiaré en cada paso para que tu aplicación Flask y MySQL esté disponible en tu red local todo el tiempo.
+
 ![Video_9_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/8ba80834-dd52-4962-aa4d-08e10610e9ef)
 ¡Bienvenido a otra emocionante lección de desarrollo web! En esta serie de videos seguimos aprendiendo a crear un sistema CRUD con Flask y Bootstrap. Continuaremos desarrollando la tarea dejada en el video 8 y además, exploraremos cómo integrar un filtro de fechas para que puedas explorar tus datos de manera más específica.
 
