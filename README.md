@@ -2,10 +2,13 @@
 Aplicativo Web  CRUD creado en Flask con la BD MySQL
 En este tutorial, aprenderás a desarrollar una aplicación web completa utilizando Flask y MySQL para gestionar el registro de visitas de clientes. Desde la configuración del entorno de desarrollo hasta la implementación de las operaciones CRUD (Crear, Leer, Actualizar y Eliminar), te guiaré en cada paso del proceso de desarrollo.
 
+
+
 No importa si eres un principiante o un desarrollador experimentado, este tutorial te brindará los conocimientos necesarios para construir tu propia aplicación web de control de visitas en Flask. 
 
 ![Video_10_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/3ee1398b-0080-4757-a85f-f5bca6aad77c)
  Aprende a utilizar NSSM para convertir tu aplicación web en un servicio local de manera rápida y sencilla. En este tutorial completo, te guiaré en cada paso para que tu aplicación Flask y MySQL esté disponible en tu red local todo el tiempo.
+
 
 ![Video_9_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/8ba80834-dd52-4962-aa4d-08e10610e9ef)
 ¡Bienvenido a otra emocionante lección de desarrollo web! En esta serie de videos seguimos aprendiendo a crear un sistema CRUD con Flask y Bootstrap. Continuaremos desarrollando la tarea dejada en el video 8 y además, exploraremos cómo integrar un filtro de fechas para que puedas explorar tus datos de manera más específica.
@@ -14,7 +17,9 @@ No importa si eres un principiante o un desarrollador experimentado, este tutori
 ¡Bienvenidos a mi canal de desarrollo en Proyectos Python! En este emocionante tutorial siendo el video  8, seguimos aprendiendo cómo implementar una funcionalidad de mantenimiento web utilizando Flask y Bootstrap. Pero eso no es todo, ¡también crearemos un botón personalizado para que los usuarios puedan descargar sus registros en un archivo Excel! No te pierdas esta increíble oportunidad de mejorar tus habilidades de programación mientras construimos paso a paso un proyecto práctico y útil juntos.
 
 ![Video_7_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/67b5e57b-642c-4ae3-8999-cdeffe4f6e05)
-¿Listo para dar un paso adelante en tu conocimiento de desarrollo web? En este tutorial práctico, te llevaré en un viaje de creación de un sistema CRUD con Flask y MySQL. No solo aprenderemos a realizar operaciones básicas de Crear, Leer y Actualizar, sino que también abordaremos dos enfoques únicos para manejar Eliminaciones y Anulaciones, brindándote habilidades valiosas en el manejo de datos en aplicaciones web.
+¿Listo para dar un paso adelante en tu conocimiento de desarrollo web? En este tutorial práctico, te llevaré en un viaje de creación de un sistema CRUD con Flask y MySQL. No [Manual NSSM.pdf](https://github.com/mectoys/control_atencion/files/12448693/Manual.NSSM.pdf)
+solo aprenderemo[Manual NSSM.pdf](https://github.com/mectoys/control_atencion/files/12448694/Manual.NSSM.pdf)
+s a realizar operaciones básicas de Crear, Leer y Actualizar, sino que también abordaremos dos enfoques únicos para manejar Eliminaciones y Anulaciones, brindándote habilidades valiosas en el manejo de datos en aplicaciones web.
 
 ![Video_6_Webapp_Atencion_Cliente](https://github.com/mectoys/control_atencion/assets/7143758/71972fc4-1905-4767-91be-84f464e61119)
 En este video tutorial, aprenderás cómo implementar la funcionalidad de actualización de registros en el proyecto de Control de Atención CRUD usando Python y Flask. Exploraremos la creación de la ruta y función de actualización, así como la creación de un formulario modal utilizando Bootstrap. Además, te mostraré una función auxiliar que simplificará tu código. No te pierdas este paso crucial para completar el sistema de gestión de atención. ¡Suscríbete para más contenido de desarrollo web con Python y Flask!
